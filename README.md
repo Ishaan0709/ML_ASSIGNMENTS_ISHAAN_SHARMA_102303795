@@ -1,101 +1,111 @@
-Overview
+📘 Overview
 
-This repository contains a collection of Machine Learning assignments completed as part of the academic coursework. Each assignment focuses on developing fundamental and applied skills in data analysis, preprocessing, and model understanding using Python. The work emphasizes both theoretical and practical understanding of machine learning and data science concepts.
+This repository comprises a series of structured assignments completed as part of the Machine Learning coursework. The assignments aim to build a strong conceptual and practical foundation in core data science techniques, ranging from numerical computing and data preprocessing to feature engineering and network simulation.
 
-Assignment Details
-Assignment 1 – NumPy Fundamentals
+Each task emphasizes analytical thinking, the use of Python’s scientific libraries, and real-world implementation of machine learning workflows. The repository demonstrates systematic learning and hands-on application of essential concepts in the data-driven domain.
 
-Objective:
-To explore the core functionalities of NumPy, focusing on mathematical operations, matrix manipulations, array creation, and linear algebra concepts.
-
-Key Concepts Covered:
-
-Array operations, reshaping, and flattening
-
-Statistical analysis using mean, median, standard deviation
-
-Matrix operations including determinant, inverse, eigenvalues & eigenvectors
-
-Image-to-array conversion and array data handling
-
-Assignment 2 – Data Preprocessing and Feature Engineering
+📂 Assignment Details
+🧮 Assignment 1 – NumPy Fundamentals
 
 Objective:
-To perform data cleaning and preprocessing operations on real-world datasets for preparing them for machine learning tasks.
+To develop familiarity with the NumPy library and its mathematical, statistical, and linear algebraic capabilities for scientific computation.
 
-Key Concepts Covered:
+Key Highlights:
 
-Handling missing values using SimpleImputer
+Array creation, indexing, slicing, reshaping, and flattening
 
-Normalization and Standardization using Scikit-learn
+Performing matrix operations such as determinant, inverse, and eigenvalue computation
 
-Discretization and One-Hot Encoding
+Element-wise operations and statistical analysis (mean, median, std. deviation)
 
-Similarity measures: Simple Matching, Jaccard, and Cosine similarity
+Image-to-array conversion using the Pillow library
 
-Correlation analysis using Pearson’s coefficient
+File I/O operations with NumPy arrays
+
+Outcome:
+Acquired strong foundational knowledge of NumPy as a high-performance computing tool for mathematical and ML-related data processing tasks.
+
+🧹 Assignment 2 – Data Preprocessing and Feature Engineering
+
+Objective:
+To perform systematic data preprocessing, cleaning, and transformation to prepare raw data for machine learning analysis.
+
+Key Highlights:
+
+Handling missing values using the SimpleImputer technique
+
+Feature scaling through Normalization (MinMaxScaler) and Standardization (StandardScaler)
+
+Discretization and One-Hot Encoding for categorical data
+
+Computing similarity measures (Simple Matching, Jaccard, and Cosine)
+
+Performing correlation analysis using Pearson’s correlation coefficient
 
 Dataset Used:
-Bike Buyers Dataset (Microsoft Adventure Works Cycles Customer Data)
+Bike Buyers Dataset – Microsoft Adventure Works Cycles (Customer Demographics and Purchase Behavior)
 
-Assignment 3 – Data Handling and Visualization
+Outcome:
+Gained in-depth understanding of preprocessing pipelines crucial for ensuring model readiness and improving data quality in ML workflows.
 
-Objective:
-To apply different data transformation and visualization techniques to analyze structured data for extracting meaningful insights.
-
-Key Concepts Covered:
-
-DataFrame operations with Pandas
-
-Grouping, aggregation, and filtering
-
-Handling categorical and numerical data
-
-Exploratory data analysis (EDA)
-
-Assignment 4 – Routing and Network Simulation (GNS3)
+📊 Assignment 3 – Data Handling and Visualization
 
 Objective:
-To understand basic network configurations, routing protocols, and subnetting using GNS3.
+To explore the use of Pandas and visualization tools for analyzing, grouping, and interpreting data efficiently.
 
-Key Concepts Covered:
+Key Highlights:
 
-Router and PC configuration commands
+DataFrame creation, merging, and transformation
 
-Static and dynamic routing (RIP v2)
+Group-wise operations and data aggregation
 
-IP addressing and network topology setup
+Exploratory Data Analysis (EDA) and visualization for pattern recognition
 
-End-to-end connectivity testing
+Correlation and distribution analysis using visual tools
 
-Technologies and Libraries Used
+Outcome:
+Learned to manage large datasets effectively and interpret them through analytical and graphical representations.
 
-Python 3.x
+🌐 Assignment 4 – Network Simulation using GNS3
 
-NumPy
+Objective:
+To simulate and configure basic computer networks using GNS3 by implementing real-world routing and IP addressing concepts.
 
-Pandas
+Key Highlights:
 
-Matplotlib
+Configuring routers, switches, and PCs using CLI commands
 
-Scikit-learn
+Implementing Static Routing and RIP Version 2 (Routing Information Protocol)
 
-Seaborn
+Testing connectivity through ping and traceroute commands
 
-GNS3 Simulator
+Designing and verifying logical network topologies
 
-Learning Outcomes
+Outcome:
+Understood foundational networking principles and practical routing mechanisms, integrating machine learning perspectives with network-level system understanding.
 
-Gained hands-on experience with Python-based data manipulation and preprocessing.
+🧠 Technologies & Libraries Utilized
 
-Developed understanding of fundamental ML data preparation techniques.
+Programming Language: Python 3.x
 
-Strengthened practical knowledge in applying similarity, correlation, and statistical concepts.
+Libraries: NumPy, Pandas, Scikit-learn, Matplotlib, Seaborn
 
-Enhanced problem-solving and analytical thinking through real-time implementation.
+Tools: GNS3 Network Simulator, Anaconda, Jupyter Notebook / Spyder IDE
 
-Author
+🎯 Learning Outcomes
+
+Developed competence in Python-based numerical and analytical computing.
+
+Acquired essential preprocessing and data transformation skills for ML model training.
+
+Enhanced ability to analyze, clean, and visualize complex datasets.
+
+Strengthened understanding of data-driven decision-making and statistical reasoning.
+
+Gained exposure to applied networking setups relevant to intelligent systems.
+
+👨‍💻 Author
 
 Name: Ishaan Sharma
-Roll No: 102303795
-Course: B.Tech – Computer Engineering
+Roll Number: 102303795
+Program: B.Tech in Computer Engineering
