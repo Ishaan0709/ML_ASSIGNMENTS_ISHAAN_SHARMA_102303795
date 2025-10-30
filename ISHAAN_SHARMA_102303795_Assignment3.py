@@ -1,86 +1,131 @@
-#question1
+# =============================================================
+# Q1: K-Fold Cross Validation for Multiple Linear Regression
+# (Least Square Error Fit)
+# =============================================================
+
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import KFold, train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import r2_score
 
-file_path = "usa_house_prices.csv"
-data = pd.read_csv(file_path)
+# (a) Divide the dataset into input features and output variable (Price)
+DATA_PATH = r"D:/5_Machine Learning/ML Assigs/usa_house_prices.csv"
+df = pd.read_csv(DATA_PATH)
+print("Columns:", df.columns)
 
-if 'price' not in data.columns:
-    raise ValueError("Target column missing. Rename price column correctly.")
+X = df.drop(columns=['Price']).values.astype(float)
+y = df['Price'].values.astype(float).reshape(-1, 1)
 
-features = data.drop('price', axis=1).values.astype(float)
-target = data['price'].values.astype(float).reshape(-1, 1)
+# (b) Scale the values of input features
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
 
-sc = StandardScaler()
-X_norm = sc.fit_transform(features)
-X_bias = np.c_[np.ones((X_norm.shape[0], 1)), X_norm]
+# (c) Divide dataset into 5 folds
+def add_bias(X):
+    return np.hstack([np.ones((X.shape[0], 1)), X])
+Xb = add_bias(X_scaled)
+kf = KFold(n_splits=5, shuffle=True, random_state=42)
 
-cv = KFold(n_splits=5, shuffle=True, random_state=1)
-weights_list, r2_list = [], []
+# (d) Run 5 iterations – calculate β, predicted values, R² score
+betas, r2_scores = [], []
+for fold_idx, (train_idx, test_idx) in enumerate(kf.split(Xb), start=1):
+    X_train, X_test = Xb[train_idx], Xb[test_idx]
+    y_train, y_test = y[train_idx], y[test_idx]
 
-for fold, (train_ids, test_ids) in enumerate(cv.split(X_bias), start=1):
-    X_tr, X_te = X_bias[train_ids], X_bias[test_ids]
-    y_tr, y_te = target[train_ids], target[test_ids]
-    w = np.linalg.pinv(X_tr.T @ X_tr + 1e-6 * np.eye(X_tr.shape[1])) @ X_tr.T @ y_tr
-    y_hat = X_te @ w
-    score = r2_score(y_te, y_hat)
-    r2_list.append(score)
-    weights_list.append(w)
-    print(f"Fold {fold} → R2 = {score:.4f}")
+    XtX = X_train.T.dot(X_train)
+    eps = 1e-8
+    beta = np.linalg.pinv(XtX + eps * np.eye(XtX.shape[0])).dot(X_train.T).dot(y_train)
+    y_pred = X_test.dot(beta)
+    r2 = r2_score(y_test, y_pred)
 
-best_fold = np.argmax(r2_list)
-opt_weights = weights_list[best_fold]
-print(f"\nBest Fold: {best_fold + 1}, R2 = {r2_list[best_fold]:.4f}")
+    betas.append(beta)
+    r2_scores.append(r2)
+    print(f"Fold {fold_idx}: R² = {r2:.4f}")
 
-X_train, X_test, y_train, y_test = train_test_split(X_bias, target, test_size=0.3, random_state=1)
-final_w = np.linalg.pinv(X_train.T @ X_train + 1e-6 * np.eye(X_train.shape[1])) @ X_train.T @ y_train
-y_pred_final = X_test @ final_w
-print("R2 (70/30 split):", round(r2_score(y_test, y_pred_final), 4))
+# (e) Use best β (max R²) to train on 70%, test on 30%
+best_idx = int(np.argmax(r2_scores))
+best_beta = betas[best_idx]
+print(f"\nBest Fold = {best_idx+1} | Best R² = {r2_scores[best_idx]:.4f}")
 
-#question2
+X_train70, X_test30, y_train70, y_test30 = train_test_split(Xb, y, test_size=0.30, random_state=42)
+XtX_70 = X_train70.T.dot(X_train70)
+beta_70 = np.linalg.pinv(XtX_70 + eps * np.eye(XtX_70.shape[0])).dot(X_train70.T).dot(y_train70)
+y_pred_30 = X_test30.dot(beta_70)
+r2_30 = r2_score(y_test30, y_pred_30)
+print(f"R² (trained on 70%, tested on 30%): {r2_30:.4f}")
+
+y_pred_30_best = X_test30.dot(best_beta)
+r2_30_best = r2_score(y_test30, y_pred_30_best)
+print(f"R² using best β from cross-validation: {r2_30_best:.4f}")
+
+np.save("betas_all_folds.npy", np.array([b.flatten() for b in betas]))
+np.save("best_beta.npy", best_beta.flatten())
+
+print("\n Q1 Completed Successfully.\n")
+
+
+# =============================================================
+# Q2: Concept of Validation Set (Gradient Descent Optimization)
+# =============================================================
+
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import r2_score
+from sklearn.model_selection import train_test_split
 
-dataset = pd.read_csv("usa_house_prices.csv")
-X_vals = dataset.drop('price', axis=1).values.astype(float)
-y_vals = dataset['price'].values.astype(float).reshape(-1, 1)
+# (Dataset same as Q1)
+DATA_PATH = r"D:/5_Machine Learning/ML Assigs/usa_house_prices.csv"
+df = pd.read_csv(DATA_PATH)
+X = df.drop(columns=['Price']).values.astype(float)
+y = df['Price'].values.astype(float).reshape(-1, 1)
 
+# Divide dataset into Train (56%), Validation (14%), Test (30%)
 scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X_vals)
-X_ext = np.c_[np.ones((X_scaled.shape[0], 1)), X_scaled]
+X_scaled = scaler.fit_transform(X)
+Xb = np.hstack([np.ones((X_scaled.shape[0], 1)), X_scaled])
 
-X_temp, X_hold, y_temp, y_hold = train_test_split(X_ext, y_vals, test_size=0.3, random_state=5)
-X_train, X_val, y_train, y_val = train_test_split(X_temp, y_temp, test_size=0.2, random_state=5)
+X_temp, X_test, y_temp, y_test = train_test_split(Xb, y, test_size=0.30, random_state=42)
+X_train, X_val, y_train, y_val = train_test_split(X_temp, y_temp, test_size=0.2, random_state=42)
 
-def gd_optimizer(X, y, lr, steps):
-    n = X.shape[1]
-    beta = np.zeros((n, 1))
-    for _ in range(steps):
-        err = X @ beta - y
-        grad = X.T @ err * (2 / len(X))
-        beta -= lr * grad
-    return beta
+# Gradient Descent Function
+def gradient_descent(X, y, lr=0.01, n_iters=1000):
+    m, n = X.shape
+    theta = np.zeros((n, 1))
+    for i in range(n_iters):
+        preds = X.dot(theta)
+        error = preds - y
+        grad = (2.0/m) * X.T.dot(error)
+        theta -= lr * grad
+    return theta
 
-lr_list = [0.001, 0.01, 0.1, 1]
+# Try different learning rates
+learning_rates = [0.001, 0.01, 0.1, 1]
 results = []
 
-for eta in lr_list:
-    b = gd_optimizer(X_train, y_train, lr=eta, steps=1000)
-    r2_val = r2_score(y_val, X_val @ b)
-    r2_tst = r2_score(y_hold, X_hold @ b)
-    results.append((eta, r2_val, r2_tst))
-    print(f"LR={eta} | R2_Val={r2_val:.4f} | R2_Test={r2_tst:.4f}")
+for lr in learning_rates:
+    theta = gradient_descent(X_train, y_train, lr=lr, n_iters=1000)
+    y_val_pred = X_val.dot(theta)
+    y_test_pred = X_test.dot(theta)
+    r2_val = r2_score(y_val, y_val_pred)
+    r2_test = r2_score(y_test, y_test_pred)
+    results.append({'lr': lr, 'r2_val': r2_val, 'r2_test': r2_test})
+    print(f"LR={lr} | R²(Validation)={r2_val:.4f} | R²(Test)={r2_test:.4f}")
 
-best_lr, best_r2, best_test = max(results, key=lambda x: x[1])
-print("\nBest LR:", best_lr, "| Validation R2:", round(best_r2, 4), "| Test R2:", round(best_test, 4))
+# Find best learning rate
+best = max(results, key=lambda x: x['r2_val'])
+print(f"\nBest Learning Rate: {best['lr']}")
+print(f"Validation R²: {best['r2_val']:.4f}")
+print(f"Test R²: {best['r2_test']:.4f}")
 
-#question3
+print("\n Q2 Completed Successfully.\n")
+
+
+# =============================================================
+# Q3: Preprocessing and Multiple Linear Regression
+# =============================================================
+
 import numpy as np
 import pandas as pd
 from sklearn.impute import SimpleImputer
@@ -90,67 +135,78 @@ from sklearn.decomposition import PCA
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
 
-link = "https://archive.ics.uci.edu/ml/machine-learning-databases/autos/imports-85.data"
-cols = ["symboling","normalized_losses","make","fuel_type","aspiration","num_doors",
-        "body_style","drive_wheels","engine_location","wheel_base","length","width",
-        "height","curb_weight","engine_type","num_cylinders","engine_size","fuel_system",
-        "bore","stroke","compression_ratio","horsepower","peak_rpm","city_mpg",
-        "highway_mpg","price"]
+# (1) Load dataset with given columns and replace ? with NaN
+url = "https://archive.ics.uci.edu/ml/machine-learning-databases/autos/imports-85.data"
+columns = ["symboling", "normalized_losses", "make", "fuel_type", "aspiration", "num_doors",
+           "body_style", "drive_wheels", "engine_location", "wheel_base", "length", "width",
+           "height", "curb_weight", "engine_type", "num_cylinders", "engine_size", "fuel_system",
+           "bore", "stroke", "compression_ratio", "horsepower", "peak_rpm", "city_mpg",
+           "highway_mpg", "price"]
 
-cars = pd.read_csv(link, names=cols, na_values='?')
+cars = pd.read_csv(url, names=columns, na_values='?')
 cars = cars.dropna(subset=['price'])
 
-num_features = ["symboling","normalized_losses","wheel_base","length","width","height",
-                "curb_weight","engine_size","bore","stroke","compression_ratio","horsepower",
-                "peak_rpm","city_mpg","highway_mpg","price"]
+# (2) Replace NaN values with central tendency imputation
+numeric_cols = ["symboling", "normalized_losses", "wheel_base", "length", "width", "height",
+                "curb_weight", "engine_size", "bore", "stroke", "compression_ratio", "horsepower",
+                "peak_rpm", "city_mpg", "highway_mpg", "price"]
 
-for c in num_features:
-    cars[c] = pd.to_numeric(cars[c], errors='coerce')
+for col in numeric_cols:
+    cars[col] = pd.to_numeric(cars[col], errors='coerce')
 
-num_fill = SimpleImputer(strategy='mean')
-cars[num_features] = num_fill.fit_transform(cars[num_features])
+num_imputer = SimpleImputer(strategy='mean')
+cars[numeric_cols] = num_imputer.fit_transform(cars[numeric_cols])
 
-cat_features = [c for c in cars.columns if c not in num_features]
-cat_fill = SimpleImputer(strategy='most_frequent')
-cars[cat_features] = cat_fill.fit_transform(cars[cat_features])
+cat_cols = [c for c in cars.columns if c not in numeric_cols]
+cat_imputer = SimpleImputer(strategy='most_frequent')
+cars[cat_cols] = cat_imputer.fit_transform(cars[cat_cols])
 
-num_words = {'one':1,'two':2,'three':3,'four':4,'five':5,'six':6,'eight':8}
-cars['num_doors'] = cars['num_doors'].map(lambda v: num_words.get(str(v).lower(), np.nan))
-cars['num_cylinders'] = cars['num_cylinders'].map(lambda v: num_words.get(str(v).lower(), np.nan))
-cars['num_doors'].fillna(cars['num_doors'].median(), inplace=True)
-cars['num_cylinders'].fillna(cars['num_cylinders'].median(), inplace=True)
+# (3) Convert non-numeric columns using specified schemes
+word_to_num = {'one':1, 'two':2, 'three':3, 'four':4, 'five':5, 'six':6, 'eight':8}
+cars['num_doors'] = cars['num_doors'].map(lambda x: word_to_num.get(str(x).lower(), np.nan))
+cars['num_cylinders'] = cars['num_cylinders'].map(lambda x: word_to_num.get(str(x).lower(), np.nan))
+cars['num_doors'] = cars['num_doors'].fillna(cars['num_doors'].median())
+cars['num_cylinders'] = cars['num_cylinders'].fillna(cars['num_cylinders'].median())
 
-cars = pd.get_dummies(cars, columns=['body_style','drive_wheels'], drop_first=True)
+cars = pd.get_dummies(cars, columns=['body_style', 'drive_wheels'], drop_first=True)
 
-for c in ['make','aspiration','engine_location','fuel_type']:
-    cars[c] = LabelEncoder().fit_transform(cars[c])
+for col in ['make', 'aspiration', 'engine_location', 'fuel_type']:
+    le = LabelEncoder()
+    cars[col] = le.fit_transform(cars[col])
 
 cars['fuel_system'] = cars['fuel_system'].astype(str).str.contains('pfi', case=False).astype(int)
 cars['engine_type'] = cars['engine_type'].astype(str).str.contains('ohc', case=False).astype(int)
 
-Y = cars['price'].astype(float).values
+# (4) Divide dataset into input (X) and output (y) and scale features
+y = cars['price'].astype(float).values
 X = cars.drop('price', axis=1).astype(float).values
-sc = StandardScaler()
-X_std = sc.fit_transform(X)
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
 
-X_tr, X_ts, y_tr, y_ts = train_test_split(X_std, Y, test_size=0.3, random_state=10)
-model = LinearRegression().fit(X_tr, y_tr)
-pred = model.predict(X_ts)
-r2_orig = r2_score(y_ts, pred)
-print("R2 (before PCA):", round(r2_orig, 4))
+# (5) Train 70%, test 30% using Linear Regression
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.30, random_state=42)
+model = LinearRegression()
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+r2_before_pca = r2_score(y_test, y_pred)
+print(f"R² before PCA: {r2_before_pca:.4f}")
 
+# (6) Apply PCA and retrain model
 pca = PCA(n_components=0.95)
-X_pca = pca.fit_transform(X_std)
-print("Features before PCA:", X_std.shape[1])
-print("Features after PCA:", X_pca.shape[1])
+X_reduced = pca.fit_transform(X_scaled)
+print("Original feature count:", X_scaled.shape[1])
+print("Reduced feature count after PCA:", X_reduced.shape[1])
 
-Xp_tr, Xp_ts, yp_tr, yp_ts = train_test_split(X_pca, Y, test_size=0.3, random_state=10)
-model2 = LinearRegression().fit(Xp_tr, yp_tr)
-pred_pca = model2.predict(Xp_ts)
-r2_new = r2_score(yp_ts, pred_pca)
-print("R2 (after PCA):", round(r2_new, 4))
+Xp_train, Xp_test, yp_train, yp_test = train_test_split(X_reduced, y, test_size=0.30, random_state=42)
+model_pca = LinearRegression()
+model_pca.fit(Xp_train, yp_train)
+yp_pred = model_pca.predict(Xp_test)
+r2_after_pca = r2_score(yp_test, yp_pred)
+print(f"R² after PCA: {r2_after_pca:.4f}")
 
-if r2_new > r2_orig:
-    print("PCA improved the accuracy.")
+if r2_after_pca > r2_before_pca:
+    print("→ PCA improved performance")
 else:
-    print("No improvement with PCA.")
+    print("→ PCA did not improve performance")
+
+print("\n Q3 Completed Successfully.\n")
