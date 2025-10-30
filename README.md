@@ -5,6 +5,7 @@ This repository comprises a series of structured assignments completed as part o
 Each task emphasizes analytical thinking, the use of Python’s scientific libraries, and real-world implementation of machine learning workflows. The repository demonstrates systematic learning and hands-on application of essential concepts in the data-driven domain.
 
 📂 Assignment Details
+
 🧮 Assignment 1 – NumPy Fundamentals
 
 Objective:
