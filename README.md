@@ -60,7 +60,6 @@ This repository includes a structured set of **8 Machine Learning assignments** 
 - RidgeCV & LassoCV comparison
 - Hitters & Boston datasets evaluation  
 
-📄 *Assignment reference available in repository*
 
 ---
 
@@ -71,7 +70,7 @@ This repository includes a structured set of **8 Machine Learning assignments** 
 - Model evaluation using Confusion Matrix
 - Optimal K-value selection for KNN via GridSearchCV  
 
-📄 *Assignment reference available*
+
 
 ---
 
@@ -83,7 +82,6 @@ This repository includes a structured set of **8 Machine Learning assignments** 
 - Confusion Matrix Visualization  
 - Effect of scaling on accuracy  
 
-📄 *Assignment reference available*
 
 ---
 
@@ -94,7 +92,7 @@ This repository includes a structured set of **8 Machine Learning assignments** 
 - **Heart Disease Prediction:** tuning estimator count & learning rate  
 - **WISDM Motion Sensor Activity Recognition:** windowing + feature extraction  
 
-📄 *Assignment reference included*
+
 
 ---
 
