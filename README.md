@@ -1,112 +1,157 @@
-📘 Overview
+📘 MACHINE LEARNING ASSIGNMENTS – UML501
+Ishaan Sharma | B.Tech COE (TIET)
 
-This repository comprises a series of structured assignments completed as part of the Machine Learning coursework. The assignments aim to build a strong conceptual and practical foundation in core data science techniques, ranging from numerical computing and data preprocessing to feature engineering and network simulation.
+This repository includes a set of 8 Machine Learning assignments completed as part of academic coursework. Each assignment applies ML concepts practically through Python implementation, enabling a balance of theoretical understanding and real-world data experimentation.
 
-Each task emphasizes analytical thinking, the use of Python’s scientific libraries, and real-world implementation of machine learning workflows. The repository demonstrates systematic learning and hands-on application of essential concepts in the data-driven domain.
+📂 Assignment Overview
+Assignment 1 – NumPy & Computational Fundamentals
 
-📂 Assignment Details
+Objective: Develop strong basics in numerical computing using NumPy
+Key Tasks
 
-🧮 Assignment 1 – NumPy Fundamentals
+Array creation, indexing, slicing & reshaping
 
-Objective:
-To develop familiarity with the NumPy library and its mathematical, statistical, and linear algebraic capabilities for scientific computation.
+Matrix operations — multiplication, inverse, determinant, eigenvalues
 
-Key Highlights:
+Statistical processing — mean, median, SD, variance
 
-Array creation, indexing, slicing, reshaping, and flattening
+Image-to-array conversion & file storage handling
 
-Performing matrix operations such as determinant, inverse, and eigenvalue computation
+Assignment 2 – Data Preprocessing & Feature Transformation
 
-Element-wise operations and statistical analysis (mean, median, std. deviation)
+Objective: Clean, transform & prepare raw data for model training
+Key Tasks
 
-Image-to-array conversion using the Pillow library
+Missing value handling & noise reduction
 
-File I/O operations with NumPy arrays
+Normalization & Standardization
 
-Outcome:
-Acquired strong foundational knowledge of NumPy as a high-performance computing tool for mathematical and ML-related data processing tasks.
+Binning & discretization techniques
 
-🧹 Assignment 2 – Data Preprocessing and Feature Engineering
+One-hot & ordinal encoding
 
-Objective:
-To perform systematic data preprocessing, cleaning, and transformation to prepare raw data for machine learning analysis.
+Similarity & correlation metrics (Jaccard, Cosine, Pearson, SM Coefficient)
 
-Key Highlights:
+Dataset Used: Bike Buyers Dataset (Adventure Works)
 
-Handling missing values using the SimpleImputer technique
+Assignment 3 – Regression Models & PCA
 
-Feature scaling through Normalization (MinMaxScaler) and Standardization (StandardScaler)
+Objective: Train regression models and reduce dimensionality using PCA
+Key Tasks
 
-Discretization and One-Hot Encoding for categorical data
+Linear Regression: Normal Equation & Gradient Descent comparison
 
-Computing similarity measures (Simple Matching, Jaccard, and Cosine)
+Model evaluation using R² score
 
-Performing correlation analysis using Pearson’s correlation coefficient
+5-Fold Cross Validation
 
-Dataset Used:
-Bike Buyers Dataset – Microsoft Adventure Works Cycles (Customer Demographics and Purchase Behavior)
+PCA feature compression vs full feature comparison
 
-Outcome:
-Gained in-depth understanding of preprocessing pipelines crucial for ensuring model readiness and improving data quality in ML workflows.
+Assignment 4 – Web Scraping & Data Extraction
 
-📊 Assignment 3 – Data Handling and Visualization
+Objective: Extract and store real-world online data using web scraping tools
+Key Tasks
 
-Objective:
-To explore the use of Pandas and visualization tools for analyzing, grouping, and interpreting data efficiently.
+Static scraping with BeautifulSoup
 
-Key Highlights:
+Dynamic scraping using Selenium automation
 
-DataFrame creation, merging, and transformation
+Data extraction from:
 
-Group-wise operations and data aggregation
+BooksToScrape (Books & Prices)
 
-Exploratory Data Analysis (EDA) and visualization for pattern recognition
+IMDb Top-rated movies
 
-Correlation and distribution analysis using visual tools
+TimeAndDate Weather Statistics
 
-Outcome:
-Learned to manage large datasets effectively and interpret them through analytical and graphical representations.
+Export to CSV for ML-ready usage
 
-🌐 Assignment 4 – Network Simulation using GNS3
+Assignment 5 – Ridge & Lasso Regression + Cross Validation
 
-Objective:
-To simulate and configure basic computer networks using GNS3 by implementing real-world routing and IP addressing concepts.
+Objective: Implement regularization techniques for better model generalization
+Key Tasks
 
-Key Highlights:
+Ridge Regression using Gradient Descent (hyperparameter tuning)
 
-Configuring routers, switches, and PCs using CLI commands
+RidgeCV & LassoCV performance comparison
 
-Implementing Static Routing and RIP Version 2 (Routing Information Protocol)
+Hitters & Boston datasets model evaluation
 
-Testing connectivity through ping and traceroute commands
+📄 Assignment reference available in repository files
 
-Designing and verifying logical network topologies
+Assignment 6 – Naïve Bayes Classification & GridSearchCV
 
-Outcome:
-Understood foundational networking principles and practical routing mechanisms, integrating machine learning perspectives with network-level system understanding.
+Objective: Implement Bayesian classifiers & optimize hyperparameters
+Key Tasks
 
-🧠 Technologies & Libraries Utilized
+Gaussian Naive Bayes (manual calculation + sklearn version)
 
-Programming Language: Python 3.x
+Accuracy analysis using Confusion Matrix
 
-Libraries: NumPy, Pandas, Scikit-learn, Matplotlib, Seaborn
+Optimal K-value selection in KNN using GridSearchCV
 
-Tools: GNS3 Network Simulator, Anaconda, Jupyter Notebook / Spyder IDE
+📄 Assignment reference included in repository
 
-🎯 Learning Outcomes
+Assignment 7 – Support Vector Machine Classification
 
-Developed competence in Python-based numerical and analytical computing.
+Objective: Binary classification using SVM kernels
+Key Tasks
 
-Acquired essential preprocessing and data transformation skills for ML model training.
+SVM with Linear, Polynomial & RBF kernels
 
-Enhanced ability to analyze, clean, and visualize complex datasets.
+Evaluation metrics — Accuracy, Precision, Recall, F1-Score
 
-Strengthened understanding of data-driven decision-making and statistical reasoning.
+Visualization of confusion matrices
 
-Gained exposure to applied networking setups relevant to intelligent systems.
+Impact of scaling on model accuracy
 
-👨‍💻 Author
+📄 Assignment reference included
 
-Name: Ishaan Sharma
-Roll Number: 102303795
-Program: B.Tech in Computer Engineering
+Assignment 8 – AdaBoost Ensemble Learning
+
+Objective: Improve model performance using boosting techniques
+Sections Implemented
+
+SMS Spam Classification
+
+TF-IDF + Manual AdaBoost (T=15 rounds) + Sklearn AdaBoost
+
+Heart Disease Prediction
+
+Hyperparameter tuning for learning rate & estimator count
+
+WISDM Accelerometer Dataset
+
+Sensor windowing, feature extraction & model comparison
+
+📄 Assignment reference available in repository
+
+🧠 Learning Outcomes
+
+Practical exposure to full ML pipeline (EDA → Preprocessing → Model → Evaluation)
+
+Implementation of regression, probabilistic & kernel-based models
+
+Experience with real-world datasets (text, medical, wearable sensor data)
+
+Strong understanding of ensemble learning improvements
+
+Knowledge of automation & scraping for dataset generation
+
+🧰 Tools & Libraries Used
+Category	Tools
+Programming	Python 3.x
+ML Libraries	NumPy, Pandas, Scikit-learn
+Visualization	Matplotlib, Seaborn
+Web Scraping	BeautifulSoup, Selenium
+Development	Jupyter Notebook, Spyder IDE
+✍️ Author
+
+Ishaan Sharma
+B.Tech – Computer Engineering (3rd Year)
+Thapar Institute of Engineering & Technology
+📧 ishaan.sharma@thapar.edu
+
+⭐ Acknowledgement
+
+This repository is developed as part of the Machine Learning (UML501) coursework under the guidance of faculty at TIET, Patiala.
